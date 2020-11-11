@@ -78,6 +78,8 @@ namespace Vostok.Clusterclient.Singular
             self.TargetEnvironment = settings.TargetEnvironment;
 
             InitializeMetricsProviderIfNeeded(self, settings.MetricContext);
+            
+            self.AddRequestModule(new ReplicaTagsFilterFillingModule());
         }
 
         private static void InitializeMetricsProviderIfNeeded(IClusterClientConfiguration self, IMetricContext metricContext)
