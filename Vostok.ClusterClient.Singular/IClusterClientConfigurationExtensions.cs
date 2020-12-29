@@ -6,7 +6,6 @@ using Vostok.Clusterclient.Core.Strategies;
 using Vostok.Clusterclient.Core.Strategies.DelayProviders;
 using Vostok.Clusterclient.Core.Transforms;
 using Vostok.ClusterClient.Datacenters;
-using Vostok.Clusterclient.Singular.NonIdempotency;
 using Vostok.Clusterclient.Topology.CC;
 using Vostok.ClusterConfig.Client;
 using Vostok.Datacenters;
@@ -68,8 +67,8 @@ namespace Vostok.Clusterclient.Singular
             {
                 var sequential1Strategy = Strategy.Sequential1;
                 var forkingStrategy = new ForkingRequestStrategy(new EqualDelaysProvider(SingularClientConstants.ForkingStrategyParallelismLevel), SingularClientConstants.ForkingStrategyParallelismLevel);
-                var idempotencyIdentifier = IdempotencyIdentifierCache.Get(settings.TargetEnvironment, settings.TargetService);
-                self.DefaultRequestStrategy = new IdempotencySingBasedRequestStrategy(idempotencyIdentifier, sequential1Strategy, forkingStrategy);
+                var idempotencyIdentifier = IdempotencyIdentifierCache.Get(ClusterConfigClient.Default, settings.TargetEnvironment, settings.TargetService);
+                self.DefaultRequestStrategy = new IdempotencySignBasedRequestStrategy(idempotencyIdentifier, sequential1Strategy, forkingStrategy);
             }
 
             self.MaxReplicasUsedPerRequest = 3;
