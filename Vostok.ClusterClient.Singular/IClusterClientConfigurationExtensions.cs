@@ -8,6 +8,7 @@ using Vostok.Clusterclient.Core.Transforms;
 using Vostok.ClusterClient.Datacenters;
 using Vostok.Clusterclient.Topology.CC;
 using Vostok.ClusterConfig.Client;
+using Vostok.ClusterConfig.Client.Abstractions;
 using Vostok.Datacenters;
 using Vostok.Singular.Core;
 using Vostok.Metrics;
@@ -67,7 +68,7 @@ namespace Vostok.Clusterclient.Singular
             {
                 var sequential1Strategy = Strategy.Sequential1;
                 var forkingStrategy = new ForkingRequestStrategy(new EqualDelaysProvider(SingularClientConstants.ForkingStrategyParallelismLevel), SingularClientConstants.ForkingStrategyParallelismLevel);
-                var idempotencyIdentifier = IdempotencyIdentifierCache.Get(ClusterConfigClient.Default, settings.TargetEnvironment, settings.TargetService);
+                var idempotencyIdentifier = IdempotencyIdentifierCache.Get(clusterConfigClient, settings.TargetEnvironment, settings.TargetService);
                 self.DefaultRequestStrategy = new IdempotencySignBasedRequestStrategy(idempotencyIdentifier, sequential1Strategy, forkingStrategy);
             }
 
@@ -76,17 +77,17 @@ namespace Vostok.Clusterclient.Singular
             self.TargetServiceName = $"{settings.TargetService} via {SingularConstants.ServiceName}";
             self.TargetEnvironment = settings.TargetEnvironment;
 
-            InitializeMetricsProviderIfNeeded(self, settings.MetricContext);
+            InitializeMetricsProviderIfNeeded(self, settings.MetricContext, clusterConfigClient);
         }
 
-        private static void InitializeMetricsProviderIfNeeded(IClusterClientConfiguration self, IMetricContext metricContext)
+        private static void InitializeMetricsProviderIfNeeded(IClusterClientConfiguration self, IMetricContext metricContext, IClusterConfigClient clusterConfigClient)
         {
             if (metricContext == null && MetricContextProvider.IsConfigured)
                 metricContext = MetricContextProvider.Get();
 
             if (metricContext != null)
             {
-                var environment = ClusterConfigClient.Default.Get(SingularConstants.EnvironmentNamePath)?.Value;
+                var environment = clusterConfigClient.Get(SingularConstants.EnvironmentNamePath)?.Value;
                 if (environment == SingularConstants.ProdEnvironment || environment == SingularConstants.CloudEnvironment)
                 {
                     var metricsProvider = MetricsProviderCache.Get(metricContext, environment, VostokClientName);
