@@ -6,6 +6,7 @@ using Vostok.Clusterclient.Core.Modules;
 using Vostok.Clusterclient.Core.Ordering;
 using Vostok.Clusterclient.Core.Strategies;
 using Vostok.Clusterclient.Core.Topology;
+using Vostok.Commons.Environment;
 using Vostok.Logging.Abstractions;
 using Vostok.Singular.Core;
 using Vostok.Singular.Core.PathPatterns.Idempotency;
@@ -110,7 +111,7 @@ namespace Vostok.Clusterclient.Singular.ServiceMesh
 
         private class RequestContextTuner
         {
-            private static readonly FixedClusterProvider LocalSingularClusterProvider = new FixedClusterProvider(new Uri("http://singular"));
+            private static readonly FixedClusterProvider LocalSingularClusterProvider = new FixedClusterProvider(new Uri($"http://{EnvironmentInfo.FQDN}"));
             private static readonly AsIsReplicaOrdering LocalSingularReplicaOrdering = new AsIsReplicaOrdering();
 
             private readonly IClusterProvider fallbackClusterProvider;
