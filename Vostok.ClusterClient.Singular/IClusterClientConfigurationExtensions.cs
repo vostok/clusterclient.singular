@@ -65,7 +65,7 @@ namespace Vostok.Clusterclient.Singular
                 });
 
             var forkingStrategy = Strategy.Forking(SingularClientConstants.ForkingStrategyParallelismLevel);
-            var internalSingularClient = InternalSingularClientProvider.Get(configuration.Log.WithDisabledLevels(LogLevel.Debug, LogLevel.Info), settings.AlternativeClusterProvider);
+            var internalSingularClient = InternalSingularClientProvider.Get(configuration.Log.WithDisabledLevels(LogLevel.Debug), settings.AlternativeClusterProvider);
             var idempotencyIdentifier = IdempotencyIdentifierCache.Get(internalSingularClient, settings.TargetEnvironment, settings.TargetService);
             configuration.DefaultRequestStrategy = new IdempotencySignBasedRequestStrategy(idempotencyIdentifier, Strategy.Sequential1, forkingStrategy);
 
