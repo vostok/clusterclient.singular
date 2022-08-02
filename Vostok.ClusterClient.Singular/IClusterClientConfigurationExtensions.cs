@@ -7,8 +7,10 @@ using Vostok.Clusterclient.Core.Ordering.Weighed.Relative;
 using Vostok.Clusterclient.Core.Strategies;
 using Vostok.Clusterclient.Core.Transforms;
 using Vostok.ClusterClient.Datacenters;
+using Vostok.Clusterclient.Singular.Helpers;
 using Vostok.Clusterclient.Singular.ServiceMesh;
 using Vostok.Clusterclient.Topology.CC;
+using Vostok.Clusterclient.Transport;
 using Vostok.ClusterConfig.Client;
 using Vostok.ClusterConfig.Client.Abstractions;
 using Vostok.Datacenters;
@@ -80,6 +82,14 @@ namespace Vostok.Clusterclient.Singular
             InitializeMetricsProviderIfNeeded(configuration, settings.MetricContext, clusterConfigClient);
             
             configuration.AddRequestModule(new ReplicaTagsFilterFillingModule());
+        }
+
+        /// <summary>
+        /// Sets up given configuration to accept certificates (possibly unknown to OS) of Singular servers during TLS handshake.
+        /// </summary>
+        public static void SetupSingularTls(this IClusterClientConfiguration configuration)
+        {
+            configuration.SetupUniversalTransport(new UniversalTransportSettings().WithSingularTlsHandshakeValidator(configuration.Log));
         }
 
         private static void InitializeMetricsProviderIfNeeded(IClusterClientConfiguration configuration, IMetricContext? metricContext, IClusterConfigClient clusterConfigClient)
