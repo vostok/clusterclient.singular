@@ -6,6 +6,8 @@ using Vostok.Clusterclient.Core.Ordering.Weighed.Relative;
 using Vostok.Clusterclient.Core.Strategies;
 using Vostok.Clusterclient.Core.Topology;
 using Vostok.ClusterClient.Datacenters;
+using Vostok.Clusterclient.Singular.Helpers;
+using Vostok.Clusterclient.Singular.Tls;
 using Vostok.Clusterclient.Topology.CC;
 using Vostok.Clusterclient.Transport;
 using Vostok.ClusterConfig.Client;
@@ -38,7 +40,7 @@ namespace Vostok.Clusterclient.Singular
             return new Core.ClusterClient(log ?? LogProvider.Get(),
                 configuration =>
                 {
-                    configuration.SetupUniversalTransport();
+                    configuration.SetupUniversalTransport(new UniversalTransportSettings().WithSingularTlsHandshakeValidator(log));
                     configuration.ClusterProvider = alternativeCluster ?? 
                                                     new ClusterConfigClusterProvider(ClusterConfigClient.Default, SingularConstants.CCTopologyName, log ?? LogProvider.Get());
                     configuration.SetupWeighedReplicaOrdering(
