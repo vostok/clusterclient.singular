@@ -2,4 +2,5 @@ static Vostok.Clusterclient.Singular.Helpers.TransportSettingsExtensions.WithSin
 static Vostok.Clusterclient.Singular.Helpers.TransportSettingsExtensions.WithSingularTlsHandshakeValidator(this Vostok.Clusterclient.Transport.SocketsTransportSettings settings, Vostok.Logging.Abstractions.ILog log) -> Vostok.Clusterclient.Transport.SocketsTransportSettings
 static Vostok.Clusterclient.Singular.Helpers.TransportSettingsExtensions.WithSingularTlsHandshakeValidator(this Vostok.Clusterclient.Transport.UniversalTransportSettings settings, Vostok.Logging.Abstractions.ILog log) -> Vostok.Clusterclient.Transport.UniversalTransportSettings
 static Vostok.Clusterclient.Singular.Helpers.TransportSettingsExtensions.WithSingularTlsHandshakeValidator(this Vostok.Clusterclient.Transport.WebRequestTransportSettings settings, Vostok.Logging.Abstractions.ILog log) -> Vostok.Clusterclient.Transport.WebRequestTransportSettings
+static Vostok.Clusterclient.Singular.IClusterClientConfigurationExtensions.SetupSingularTls(this Vostok.Clusterclient.Core.IClusterClientConfiguration configuration) -> void
 Vostok.Clusterclient.Singular.Helpers.TransportSettingsExtensions
