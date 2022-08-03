@@ -36,11 +36,11 @@ public static class TransportSettingsExtensions
 
     private static ITlsHandshakeValidator GetValidator(ILog log)
     {
-        var thumbprintsProvider = new ClusterConfigThumbprintsProvider(
+        var thumbprintsProvider = new ClusterConfigThumbprintVerificationSettingsProvider(
             ClusterConfigClient.Default,
             SingularConstants.CloudEnvironment
         );
-        var certificateVerifier = new ThumbprintCertificateVerifier(thumbprintsProvider);
+        var certificateVerifier = new ThumbprintCertificateChainVerifier(thumbprintsProvider);
         return new SingularHandshakeValidator(
             certificateVerifier,
             log
