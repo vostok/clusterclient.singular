@@ -5,12 +5,12 @@ using Vostok.Singular.Core.Tls;
 
 namespace Vostok.Clusterclient.Singular.Tls
 {
-    internal class ClusterConfigThumbprintsProvider : IThumbprintsProvider
+    internal class ClusterConfigThumbprintVerificationSettingsProvider : IThumbprintVerificationSettingsProvider
     {
         private readonly IClusterConfigClient clusterConfigClient;
         private readonly ClusterConfigPath thumbprintsPath;
 
-        public ClusterConfigThumbprintsProvider(IClusterConfigClient clusterConfigClient, ClusterConfigPath thumbprintsPath)
+        public ClusterConfigThumbprintVerificationSettingsProvider(IClusterConfigClient clusterConfigClient, ClusterConfigPath thumbprintsPath)
         {
             this.clusterConfigClient = clusterConfigClient;
             this.thumbprintsPath = thumbprintsPath;
@@ -20,6 +20,8 @@ namespace Vostok.Clusterclient.Singular.Tls
         {
             throw new NotImplementedException();
         }
+
+        public bool AllowAnyThumbprintExceptBlacklisted => throw new NotImplementedException();
 
         public IEnumerable<string> GetBlacklist()
         {
