@@ -78,7 +78,7 @@ namespace Vostok.Clusterclient.Singular
             }
 
             InitializeMetricsProviderIfNeeded(configuration, settings.MetricContext, clusterConfigClient);
-            
+
             configuration.AddRequestModule(new ReplicaTagsFilterFillingModule());
         }
 
