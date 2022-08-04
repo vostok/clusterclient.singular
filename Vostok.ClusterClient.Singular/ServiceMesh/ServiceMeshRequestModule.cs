@@ -8,6 +8,7 @@ using Vostok.Clusterclient.Core.Strategies;
 using Vostok.Clusterclient.Core.Topology;
 using Vostok.Logging.Abstractions;
 using Vostok.Singular.Core;
+using Vostok.Singular.Core.PathPatterns.Extensions;
 using Vostok.Singular.Core.PathPatterns.Idempotency;
 
 #nullable enable
@@ -103,8 +104,8 @@ namespace Vostok.Clusterclient.Singular.ServiceMesh
 
         private async Task<bool> RequestIsIdempotentAsync(IRequestContext context) =>
             await idempotencyIdentifier.IsIdempotentAsync(context.Request.Method,
-                    IdempotencySignBasedRequestStrategy.GetRequestUrl(context.Request.Url),
-                    context.Request.Headers?[SingularHeaders.Idempotent])
+                    IdempotencySignBasedRequestStrategy.GetRequestPath(context.Request.Url),
+                    context.Request.GetIdempotencyHeader())
                 .ConfigureAwait(false);
 
         private class RequestContextTuner
