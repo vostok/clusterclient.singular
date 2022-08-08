@@ -1,0 +1,2 @@
+static Vostok.Clusterclient.Singular.Helpers.RequestExtensions.WithIdempotencyHeader(this Vostok.Clusterclient.Core.Model.Request request, bool isIdempotent) -> Vostok.Clusterclient.Core.Model.Request
+Vostok.Clusterclient.Singular.Helpers.RequestExtensions
