@@ -1,3 +1,7 @@
+## 0.1.23 (08-08-2022):
+
+Add idempotency extension to request
+
 ## 0.1.22 (29-07-2022):
 
 InternalSingularClient: set minimum log-level to 'Warn'

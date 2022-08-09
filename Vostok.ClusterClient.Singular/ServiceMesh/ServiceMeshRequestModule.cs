@@ -8,6 +8,7 @@ using Vostok.Clusterclient.Core.Strategies;
 using Vostok.Clusterclient.Core.Topology;
 using Vostok.Logging.Abstractions;
 using Vostok.Singular.Core;
+using Vostok.Singular.Core.PathPatterns.Extensions;
 using Vostok.Singular.Core.PathPatterns.Idempotency;
 
 #nullable enable
@@ -101,12 +102,11 @@ namespace Vostok.Clusterclient.Singular.ServiceMesh
                        StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private async Task<bool> RequestIsIdempotentAsync(IRequestContext context)
-        {
-            var requestPath = IdempotencySignBasedRequestStrategy.GetRequestPath(context.Request.Url);
-            var requestIsIdempotent = await idempotencyIdentifier.IsIdempotentAsync(context.Request.Method, requestPath).ConfigureAwait(false);
-            return requestIsIdempotent;
-        }
+        private async Task<bool> RequestIsIdempotentAsync(IRequestContext context) =>
+            await idempotencyIdentifier.IsIdempotentAsync(context.Request.Method,
+                    IdempotencySignBasedRequestStrategy.GetRequestPath(context.Request.Url),
+                    context.Request.GetIdempotencyHeader())
+                .ConfigureAwait(false);
 
         private class RequestContextTuner
         {
