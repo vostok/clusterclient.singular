@@ -13,11 +13,11 @@ public static class SingularRemoteCertificateValidationCallbackFactory
 {
     public static RemoteCertificateValidationCallback Create()
     {
-        return TlsHandshakeValidatorProvider.GetValidator().Verify;
+        return TlsHandshakeValidatorProvider.Get().Verify;
     }
 
     public static Func<object, X509Certificate, X509Chain, SslPolicyErrors, bool> CreateAsFunc()
     {
-        return TlsHandshakeValidatorProvider.GetValidator().Verify;
+        return TlsHandshakeValidatorProvider.Get().Verify;
     }
 }
