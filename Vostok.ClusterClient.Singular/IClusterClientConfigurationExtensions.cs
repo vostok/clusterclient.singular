@@ -54,8 +54,8 @@ namespace Vostok.Clusterclient.Singular
 
             var clusterConfigClient = ClusterConfigClient.Default;
 
-            configuration.ClusterProvider = settings.AlternativeClusterProvider ??
-                                            new ClusterConfigClusterProvider(clusterConfigClient, SingularConstants.CCTopologyName, configuration.Log);
+            configuration.ClusterProvider = settings.AlternativeClusterProvider ?? 
+                                            new SingularClusterConfigClusterProvider(new ClusterConfigClusterProvider(clusterConfigClient, SingularConstants.CCTopologyName, configuration.Log));
 
             configuration.SetupWeighedReplicaOrdering(
                 builder =>
