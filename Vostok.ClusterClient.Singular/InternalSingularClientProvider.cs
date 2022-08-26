@@ -42,7 +42,7 @@ namespace Vostok.Clusterclient.Singular
             return new Core.ClusterClient(limitedLog,
                 configuration =>
                 {
-                    configuration.SetupUniversalTransport(new UniversalTransportSettings().WithSingularTlsHandshakeValidator(log));
+                    configuration.SetupUniversalTransport();
                     configuration.ClusterProvider = alternativeCluster ?? 
                                                     new ClusterConfigClusterProvider(ClusterConfigClient.Default, SingularConstants.CCTopologyName, log ?? LogProvider.Get());
                     configuration.SetupWeighedReplicaOrdering(

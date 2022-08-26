@@ -89,7 +89,7 @@ namespace Vostok.Clusterclient.Singular
         /// </summary>
         public static void SetupSingularTls(this IClusterClientConfiguration configuration)
         {
-            configuration.SetupUniversalTransport(new UniversalTransportSettings().WithSingularTlsHandshakeValidator(configuration.Log));
+            configuration.SetupUniversalTransport(new UniversalTransportSettings().WithSingularTlsHandshakeValidator());
         }
 
         private static void InitializeMetricsProviderIfNeeded(IClusterClientConfiguration configuration, IMetricContext? metricContext, IClusterConfigClient clusterConfigClient)
