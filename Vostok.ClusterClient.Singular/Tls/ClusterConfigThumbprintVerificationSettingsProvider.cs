@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Vostok.ClusterConfig.Client.Abstractions;
 using Vostok.Configuration;
+using Vostok.Configuration.Abstractions;
 using Vostok.Configuration.Sources.ClusterConfig;
 using Vostok.Configuration.Sources.Json;
 using Vostok.Singular.Core.Configuration;
@@ -10,12 +11,11 @@ namespace Vostok.Clusterclient.Singular.Tls
 {
     internal class ClusterConfigThumbprintVerificationSettingsProvider : IThumbprintVerificationSettingsProvider
     {
-        private readonly ConfigurationProvider provider;
-
+        private readonly IConfigurationSource settingsSource;
+        
         public ClusterConfigThumbprintVerificationSettingsProvider(IClusterConfigClient clusterConfigClient, ClusterConfigPath thumbprintsPath)
         {
-            provider = new ConfigurationProvider();
-            provider.SetupSourceFor<SingularSettings.TlsClientSettings>(CreateSource(clusterConfigClient, thumbprintsPath));
+            settingsSource = CreateSource(clusterConfigClient, thumbprintsPath);
         }
 
         public IList<string> GetWhitelist()
@@ -30,10 +30,10 @@ namespace Vostok.Clusterclient.Singular.Tls
 
         private SingularSettings.TlsClientSettings GetTlsSettings()
         {
-            return provider.Get<SingularSettings.TlsClientSettings>();
+            return ConfigurationProvider.Default.Get<SingularSettings.TlsClientSettings>(settingsSource);
         }
 
-        private static ClusterConfigSource CreateSource(IClusterConfigClient client, ClusterConfigPath path)
+        private static IConfigurationSource CreateSource(IClusterConfigClient client, ClusterConfigPath path)
         {
             return new ClusterConfigSource(new ClusterConfigSourceSettings(client, path.ToString())
             {
