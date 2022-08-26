@@ -26,6 +26,9 @@
     <Compile Include="..\..\vostok.commons.environment\Vostok.Commons.Environment\RuntimeDetector.cs" Link="Commons\RuntimeDetector.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\vostok.commons.collections\Vostok.Commons.Collections\CachingTransform.cs" Link="Commons\CachingTransform.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="..\..\vostok.commons.threading\Vostok.Commons.Threading\ThreadSafeRandom.cs" Link="Commons\ThreadSafeRandom.cs" />
   </ItemGroup>
   <ItemGroup>
