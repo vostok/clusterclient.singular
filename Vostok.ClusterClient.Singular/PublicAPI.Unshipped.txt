@@ -2,7 +2,7 @@ static Vostok.Clusterclient.Singular.Helpers.TransportSettingsExtensions.WithSin
 static Vostok.Clusterclient.Singular.Helpers.TransportSettingsExtensions.WithSingularTlsHandshakeValidator(this Vostok.Clusterclient.Transport.SocketsTransportSettings settings) -> Vostok.Clusterclient.Transport.SocketsTransportSettings
 static Vostok.Clusterclient.Singular.Helpers.TransportSettingsExtensions.WithSingularTlsHandshakeValidator(this Vostok.Clusterclient.Transport.UniversalTransportSettings settings) -> Vostok.Clusterclient.Transport.UniversalTransportSettings
 static Vostok.Clusterclient.Singular.Helpers.TransportSettingsExtensions.WithSingularTlsHandshakeValidator(this Vostok.Clusterclient.Transport.WebRequestTransportSettings settings) -> Vostok.Clusterclient.Transport.WebRequestTransportSettings
-static Vostok.Clusterclient.Singular.IClusterClientConfigurationExtensions.SetupSingularTls(this Vostok.Clusterclient.Core.IClusterClientConfiguration configuration) -> void
+static Vostok.Clusterclient.Singular.IClusterClientConfigurationExtensions.SetupUniversalTransportWithSingularTls(this Vostok.Clusterclient.Core.IClusterClientConfiguration configuration) -> void
 static Vostok.Clusterclient.Singular.Tls.SingularRemoteCertificateValidationCallbackFactory.Create() -> System.Net.Security.RemoteCertificateValidationCallback
 static Vostok.Clusterclient.Singular.Tls.SingularRemoteCertificateValidationCallbackFactory.CreateAsFunc() -> System.Func<object, System.Security.Cryptography.X509Certificates.X509Certificate, System.Security.Cryptography.X509Certificates.X509Chain, System.Net.Security.SslPolicyErrors, bool>
 Vostok.Clusterclient.Singular.Helpers.TransportSettingsExtensions
