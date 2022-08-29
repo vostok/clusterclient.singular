@@ -6,4 +6,6 @@ static Vostok.Clusterclient.Singular.IClusterClientConfigurationExtensions.Setup
 static Vostok.Clusterclient.Singular.Tls.SingularRemoteCertificateValidationCallbackFactory.Create() -> System.Net.Security.RemoteCertificateValidationCallback
 static Vostok.Clusterclient.Singular.Tls.SingularRemoteCertificateValidationCallbackFactory.CreateAsFunc() -> System.Func<object, System.Security.Cryptography.X509Certificates.X509Certificate, System.Security.Cryptography.X509Certificates.X509Chain, System.Net.Security.SslPolicyErrors, bool>
 Vostok.Clusterclient.Singular.Helpers.TransportSettingsExtensions
+Vostok.Clusterclient.Singular.SingularClientSettings.UseTls.get -> bool
+Vostok.Clusterclient.Singular.SingularClientSettings.UseTls.set -> void
 Vostok.Clusterclient.Singular.Tls.SingularRemoteCertificateValidationCallbackFactory
