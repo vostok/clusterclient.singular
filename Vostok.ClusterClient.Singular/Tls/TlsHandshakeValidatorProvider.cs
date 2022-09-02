@@ -17,9 +17,11 @@ internal class TlsHandshakeValidatorProvider
     {
         var log = LogProvider.Get();
         var thumbprintsProvider = ClusterConfigThumbprintVerificationSettingsProvider.Default;
-        var certificateVerifier = new ThumbprintCertificateChainVerifier(thumbprintsProvider);
+        var authorityVerifier = new ThumbprintCertificateChainAuthorityVerifier(thumbprintsProvider);
+        var validityVerifier = new SimpleChainValidityVerifier();
         return new SingularHandshakeValidator(
-            certificateVerifier,
+            authorityVerifier,
+            validityVerifier,
             log
         );
     }
