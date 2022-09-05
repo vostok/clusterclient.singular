@@ -29,7 +29,7 @@ notests *default:
     - vostok.clusterclient.topology.cc
     - vostok.clusterconfig.client
     - vostok.clusterconfig.client.abstractions
-    - vostok.singular.core/src@tls_settings
+    - vostok.singular.core/src
 
 full-build > notests:
   deps:
