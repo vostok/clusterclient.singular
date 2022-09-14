@@ -5,10 +5,13 @@ using Vostok.Clusterclient.Core.Modules;
 using Vostok.Clusterclient.Core.Ordering.Weighed;
 using Vostok.Clusterclient.Core.Ordering.Weighed.Relative;
 using Vostok.Clusterclient.Core.Strategies;
+using Vostok.Clusterclient.Core.Topology;
 using Vostok.Clusterclient.Core.Transforms;
 using Vostok.ClusterClient.Datacenters;
+using Vostok.Clusterclient.Singular.Helpers;
 using Vostok.Clusterclient.Singular.ServiceMesh;
 using Vostok.Clusterclient.Topology.CC;
+using Vostok.Clusterclient.Transport;
 using Vostok.ClusterConfig.Client;
 using Vostok.ClusterConfig.Client.Abstractions;
 using Vostok.Datacenters;
@@ -52,8 +55,7 @@ namespace Vostok.Clusterclient.Singular
 
             var clusterConfigClient = ClusterConfigClient.Default;
 
-            configuration.ClusterProvider = settings.AlternativeClusterProvider ??
-                                            new ClusterConfigClusterProvider(clusterConfigClient, SingularConstants.CCTopologyName, configuration.Log);
+            configuration.ClusterProvider = settings.AlternativeClusterProvider ?? ObtainDefaultClusterProvider(configuration, settings, clusterConfigClient);
 
             configuration.DefaultConnectionTimeout = SingularClientConstants.ConnectionTimeout;
             
@@ -82,6 +84,26 @@ namespace Vostok.Clusterclient.Singular
             InitializeMetricsProviderIfNeeded(configuration, settings.MetricContext, clusterConfigClient);
 
             configuration.AddRequestModule(new ReplicaTagsFilterFillingModule());
+        }
+
+        /// <summary>
+        /// Sets up client to send secured requests to Singular.
+        /// <see cref="UniversalTransport"/> is set up with given configuration to accept certificates (possibly unknown to OS) of Singular servers during TLS handshake.
+        /// </summary>
+        public static void SetupUniversalTransportWithTlsSingular(this IClusterClientConfiguration configuration, SingularClientSettings settings)
+        {
+            settings.UseTls = true;
+
+            configuration.SetupUniversalTransport(new UniversalTransportSettings().WithSingularTlsHandshakeValidator());
+            configuration.SetupSingular(settings);
+        }
+
+        private static IClusterProvider ObtainDefaultClusterProvider(IClusterClientConfiguration configuration, SingularClientSettings settings, IClusterConfigClient clusterConfigClient)
+        {
+            var clusterProvider = new ClusterConfigClusterProvider(clusterConfigClient, SingularConstants.CCTopologyName, configuration.Log);
+            return settings.UseTls 
+                ? new SingularTlsClusterProvider(clusterProvider) 
+                : clusterProvider;
         }
 
         private static void InitializeMetricsProviderIfNeeded(IClusterClientConfiguration configuration, IMetricContext? metricContext, IClusterConfigClient clusterConfigClient)
