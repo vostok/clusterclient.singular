@@ -1,3 +1,7 @@
+## 0.1.24 (14-09-2022):
+
+Added configuration `DefaultConnectionTimeout`.
+
 ## 0.1.23 (08-08-2022):
 
 Add idempotency extension to request
