@@ -57,6 +57,8 @@ namespace Vostok.Clusterclient.Singular
 
             configuration.ClusterProvider = settings.AlternativeClusterProvider ?? ObtainDefaultClusterProvider(configuration, settings, clusterConfigClient);
 
+            configuration.DefaultConnectionTimeout = SingularClientConstants.ConnectionTimeout;
+            
             configuration.SetupWeighedReplicaOrdering(
                 builder =>
                 {
