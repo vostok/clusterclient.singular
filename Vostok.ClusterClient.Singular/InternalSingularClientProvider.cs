@@ -6,6 +6,8 @@ using Vostok.Clusterclient.Core.Ordering.Weighed.Relative;
 using Vostok.Clusterclient.Core.Strategies;
 using Vostok.Clusterclient.Core.Topology;
 using Vostok.ClusterClient.Datacenters;
+using Vostok.Clusterclient.Singular.Helpers;
+using Vostok.Clusterclient.Singular.Tls;
 using Vostok.Clusterclient.Topology.CC;
 using Vostok.Clusterclient.Transport;
 using Vostok.ClusterConfig.Client;

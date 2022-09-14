@@ -57,5 +57,10 @@ namespace Vostok.Clusterclient.Singular
         /// Explicitly setting a <see cref="IMetricContext"/> allows the client from writing metrics about quality.
         /// </summary>
         public IMetricContext? MetricContext { get; set; }
+
+        /// <summary>
+        /// Specifies whether client should use secured connection to Singular replicas.
+        /// </summary>
+        public bool UseTls { get; set; }
     }
 }

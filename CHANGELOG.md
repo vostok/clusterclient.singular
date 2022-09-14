@@ -1,6 +1,10 @@
-## 0.1.24 (14-09-2022):
+## 0.1.25 (14-09-2022):
 
 Added configuration `DefaultConnectionTimeout`.
+
+## 0.1.24 (05-09-2022):
+
+Added TLS settings support.
 
 ## 0.1.23 (08-08-2022):
 

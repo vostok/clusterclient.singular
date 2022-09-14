@@ -1,8 +1,16 @@
 ﻿static Vostok.Clusterclient.Singular.Helpers.RequestExtensions.WithIdempotencyHeader(this Vostok.Clusterclient.Core.Model.Request request, bool isIdempotent) -> Vostok.Clusterclient.Core.Model.Request
 static Vostok.Clusterclient.Singular.Helpers.RequestParametersExtensions.SetTagsFilter(this Vostok.Clusterclient.Core.Model.RequestParameters requestParameters, string filterString) -> Vostok.Clusterclient.Core.Model.RequestParameters
+static Vostok.Clusterclient.Singular.Helpers.TransportSettingsExtensions.WithSingularTlsHandshakeValidator(this Vostok.Clusterclient.Transport.NativeTransportSettings settings) -> Vostok.Clusterclient.Transport.NativeTransportSettings
+static Vostok.Clusterclient.Singular.Helpers.TransportSettingsExtensions.WithSingularTlsHandshakeValidator(this Vostok.Clusterclient.Transport.SocketsTransportSettings settings) -> Vostok.Clusterclient.Transport.SocketsTransportSettings
+static Vostok.Clusterclient.Singular.Helpers.TransportSettingsExtensions.WithSingularTlsHandshakeValidator(this Vostok.Clusterclient.Transport.UniversalTransportSettings settings) -> Vostok.Clusterclient.Transport.UniversalTransportSettings
+static Vostok.Clusterclient.Singular.Helpers.TransportSettingsExtensions.WithSingularTlsHandshakeValidator(this Vostok.Clusterclient.Transport.WebRequestTransportSettings settings) -> Vostok.Clusterclient.Transport.WebRequestTransportSettings
 static Vostok.Clusterclient.Singular.IClusterClientConfigurationExtensions.SetupSingular(this Vostok.Clusterclient.Core.IClusterClientConfiguration configuration, Vostok.Clusterclient.Singular.SingularClientSettings settings) -> void
+static Vostok.Clusterclient.Singular.IClusterClientConfigurationExtensions.SetupUniversalTransportWithTlsSingular(this Vostok.Clusterclient.Core.IClusterClientConfiguration configuration, Vostok.Clusterclient.Singular.SingularClientSettings settings) -> void
+static Vostok.Clusterclient.Singular.Tls.SingularRemoteCertificateValidationCallbackFactory.Create() -> System.Net.Security.RemoteCertificateValidationCallback
+static Vostok.Clusterclient.Singular.Tls.SingularRemoteCertificateValidationCallbackFactory.CreateAsFunc() -> System.Func<object, System.Security.Cryptography.X509Certificates.X509Certificate, System.Security.Cryptography.X509Certificates.X509Chain, System.Net.Security.SslPolicyErrors, bool>
 Vostok.Clusterclient.Singular.Helpers.RequestExtensions
 Vostok.Clusterclient.Singular.Helpers.RequestParametersExtensions
+Vostok.Clusterclient.Singular.Helpers.TransportSettingsExtensions
 Vostok.Clusterclient.Singular.IClusterClientConfigurationExtensions
 Vostok.Clusterclient.Singular.SingularClientSettings
 Vostok.Clusterclient.Singular.SingularClientSettings.AlternativeClusterProvider.get -> Vostok.Clusterclient.Core.Topology.IClusterProvider
@@ -13,3 +21,6 @@ Vostok.Clusterclient.Singular.SingularClientSettings.SingularClientSettings(stri
 Vostok.Clusterclient.Singular.SingularClientSettings.SingularClientSettings(string serviceName) -> void
 Vostok.Clusterclient.Singular.SingularClientSettings.TargetEnvironment.get -> string
 Vostok.Clusterclient.Singular.SingularClientSettings.TargetService.get -> string
+Vostok.Clusterclient.Singular.SingularClientSettings.UseTls.get -> bool
+Vostok.Clusterclient.Singular.SingularClientSettings.UseTls.set -> void
+Vostok.Clusterclient.Singular.Tls.SingularRemoteCertificateValidationCallbackFactory
