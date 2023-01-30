@@ -10,6 +10,7 @@ using Vostok.Clusterclient.Core.Transforms;
 using Vostok.ClusterClient.Datacenters;
 using Vostok.Clusterclient.Singular.Helpers;
 using Vostok.Clusterclient.Singular.ServiceMesh;
+using Vostok.Clusterclient.Singular.Strategies;
 using Vostok.Clusterclient.Topology.CC;
 using Vostok.Clusterclient.Transport;
 using Vostok.ClusterConfig.Client;
@@ -19,6 +20,8 @@ using Vostok.Logging.Abstractions;
 using Vostok.Metrics;
 using Vostok.Singular.Core;
 using Vostok.Singular.Core.PathPatterns.Idempotency;
+using Vostok.Singular.Core.PathPatterns.SettingsAlias;
+using Vostok.Singular.Core.PathPatterns.Timeout;
 using Vostok.Singular.Core.QualityMetrics;
 
 #nullable enable
@@ -58,7 +61,7 @@ namespace Vostok.Clusterclient.Singular
             configuration.ClusterProvider = settings.AlternativeClusterProvider ?? ObtainDefaultClusterProvider(configuration, settings, clusterConfigClient);
 
             configuration.DefaultConnectionTimeout = SingularClientConstants.ConnectionTimeout;
-            
+
             configuration.SetupWeighedReplicaOrdering(
                 builder =>
                 {
@@ -71,7 +74,8 @@ namespace Vostok.Clusterclient.Singular
             var forkingStrategy = Strategy.Forking(SingularClientConstants.ForkingStrategyParallelismLevel);
             var internalSingularClient = InternalSingularClientProvider.Get(configuration.Log.WithDisabledLevels(LogLevel.Debug), settings.AlternativeClusterProvider);
             var idempotencyIdentifier = IdempotencyIdentifierCache.Get(internalSingularClient, settings.TargetEnvironment, settings.TargetService);
-            configuration.DefaultRequestStrategy = new IdempotencySignBasedRequestStrategy(idempotencyIdentifier, Strategy.Sequential1, forkingStrategy);
+            var idempotencyStrategy = new IdempotencySignBasedRequestStrategy(idempotencyIdentifier, Strategy.Sequential1, forkingStrategy);
+            configuration.DefaultRequestStrategy = CreateTimeoutStrategy(idempotencyStrategy, internalSingularClient, settings);
 
             configuration.MaxReplicasUsedPerRequest = SingularClientConstants.ForkingStrategyParallelismLevel;
 
@@ -101,8 +105,8 @@ namespace Vostok.Clusterclient.Singular
         private static IClusterProvider ObtainDefaultClusterProvider(IClusterClientConfiguration configuration, SingularClientSettings settings, IClusterConfigClient clusterConfigClient)
         {
             var clusterProvider = new ClusterConfigClusterProvider(clusterConfigClient, SingularConstants.CCTopologyName, configuration.Log);
-            return settings.UseTls 
-                ? new SingularTlsClusterProvider(clusterProvider) 
+            return settings.UseTls
+                ? new SingularTlsClusterProvider(clusterProvider)
                 : clusterProvider;
         }
 
@@ -120,6 +124,15 @@ namespace Vostok.Clusterclient.Singular
                     configuration.AddRequestModule(new MetricsModule(metricsProvider));
                 }
             }
+        }
+
+        private static IRequestStrategy CreateTimeoutStrategy(IRequestStrategy idempotencyStrategy, IClusterClient internalSingularClient, SingularClientSettings settings)
+        {
+            var settingsAliasIdentifier = new SettingsAliasIdentifierFactory()
+                .Create(internalSingularClient, settings.TargetEnvironment, settings.TargetService);
+            var timeoutSettingsResolver = new TimeoutSettingsResolverFactory(settingsAliasIdentifier)
+                .Create(internalSingularClient, settings.TargetEnvironment, settings.TargetService);
+            return new TimeoutStrategy(idempotencyStrategy, timeoutSettingsResolver);
         }
     }
 }
