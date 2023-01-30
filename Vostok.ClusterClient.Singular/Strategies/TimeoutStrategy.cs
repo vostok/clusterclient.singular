@@ -7,7 +7,7 @@ using Vostok.Clusterclient.Core.Model;
 using Vostok.Clusterclient.Core.Sending;
 using Vostok.Clusterclient.Core.Strategies;
 using Vostok.Clusterclient.Singular.Helpers;
-using Vostok.Singular.Core.PathPatterns.Idempotency;
+using Vostok.Singular.Core.PathPatterns.Extensions;
 using Vostok.Singular.Core.PathPatterns.Timeout;
 
 namespace Vostok.Clusterclient.Singular.Strategies
@@ -33,8 +33,15 @@ namespace Vostok.Clusterclient.Singular.Strategies
                 return;
             }
             
-            var timeout = await timeoutSettingsResolver.Get(request.Method, IdempotencySignBasedRequestStrategy.GetRequestPath(request.Url));
-            var newBudget = RequestTimeBudget.StartNew(timeout);
+            var timeout = await timeoutSettingsResolver.Get(request.Method, request.Url.GetRequestPath());
+
+            if (!timeout.HasValue)
+            {
+                await requestStrategy.SendAsync(request, parameters, sender, budget, replicas, replicasCount, cancellationToken);
+                return;
+            }
+            
+            var newBudget = RequestTimeBudget.StartNew(timeout.Value);
                 
             await requestStrategy.SendAsync(request, parameters, sender, newBudget, replicas, replicasCount, cancellationToken);
         }
