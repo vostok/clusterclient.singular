@@ -22,28 +22,33 @@ namespace Vostok.Clusterclient.Singular.Strategies
             this.requestStrategy = requestStrategy;
             this.timeoutSettingsResolver = timeoutSettingsResolver;
         }
-        
-        public async Task SendAsync(Request request, RequestParameters parameters,
-                                    IRequestSender sender, IRequestTimeBudget budget,
-                                    IEnumerable<Uri> replicas, int replicasCount, CancellationToken cancellationToken)
+
+        public async Task SendAsync(
+            Request request,
+            RequestParameters parameters,
+            IRequestSender sender,
+            IRequestTimeBudget budget,
+            IEnumerable<Uri> replicas,
+            int replicasCount,
+            CancellationToken cancellationToken)
         {
             if (budget.Total != ClusterClientDefaults.Timeout)
             {
-                await requestStrategy.SendAsync(request, parameters, sender, budget, replicas, replicasCount, cancellationToken);
+                await requestStrategy.SendAsync(request, parameters, sender, budget, replicas, replicasCount, cancellationToken).ConfigureAwait(false);
                 return;
             }
-            
-            var timeout = await timeoutSettingsResolver.Get(request.Method, request.Url.GetRequestPath());
+
+            var timeout = await timeoutSettingsResolver.Get(request.Method, request.Url.GetRequestPath()).ConfigureAwait(false);
 
             if (!timeout.HasValue)
             {
-                await requestStrategy.SendAsync(request, parameters, sender, budget, replicas, replicasCount, cancellationToken);
+                await requestStrategy.SendAsync(request, parameters, sender, budget, replicas, replicasCount, cancellationToken).ConfigureAwait(false);
                 return;
             }
-            
+
             var newBudget = RequestTimeBudget.StartNew(timeout.Value);
-                
-            await requestStrategy.SendAsync(request, parameters, sender, newBudget, replicas, replicasCount, cancellationToken);
+
+            await requestStrategy.SendAsync(request, parameters, sender, newBudget, replicas, replicasCount, cancellationToken).ConfigureAwait(false);
         }
     }
 }
