@@ -10,11 +10,12 @@ using Vostok.Clusterclient.Core.Transforms;
 using Vostok.ClusterClient.Datacenters;
 using Vostok.Clusterclient.Singular.Helpers;
 using Vostok.Clusterclient.Singular.ServiceMesh;
-using Vostok.Clusterclient.Singular.Strategies;
 using Vostok.Clusterclient.Topology.CC;
 using Vostok.Clusterclient.Transport;
 using Vostok.ClusterConfig.Client;
 using Vostok.ClusterConfig.Client.Abstractions;
+using Vostok.Configuration;
+using Vostok.Configuration.Logging;
 using Vostok.Datacenters;
 using Vostok.Logging.Abstractions;
 using Vostok.Metrics;
@@ -75,7 +76,7 @@ namespace Vostok.Clusterclient.Singular
             var idempotencyIdentifier = IdempotencyIdentifierCache.Get(internalSingularClient, settings.TargetEnvironment, settings.TargetService);
             var idempotencyStrategy = new IdempotencySignBasedRequestStrategy(idempotencyIdentifier, Strategy.Sequential1, forkingStrategy);
             configuration.DefaultRequestStrategy = CreateSingularTimeoutSettingsStrategy(idempotencyStrategy, internalSingularClient, settings);
-            ConfigurationProviderConfigurator.SetupLoggingAndSetDefaultProvider();
+            SetDefaultConfigurationProvider();
 
             configuration.MaxReplicasUsedPerRequest = SingularClientConstants.ForkingStrategyParallelismLevel;
 
@@ -135,6 +136,18 @@ namespace Vostok.Clusterclient.Singular
             
             var timeoutSettingsProvider = TimeoutSettingsProviderCache.Get(internalSingularClient, settings.TargetEnvironment, settings.TargetService);
             return new SingularTimeoutSettingsStrategy(idempotencyStrategy, timeoutSettingsProvider);
+        }
+
+        private static void SetDefaultConfigurationProvider()
+        {
+            var providerSettings = new ConfigurationProviderSettings()
+                .WithErrorLogging(LogProvider.Get())
+                .WithSettingsLogging(LogProvider.Get());
+
+            var provider = new ConfigurationProvider(providerSettings);
+
+            if (!ConfigurationProvider.TrySetDefault(provider))
+                provider.Dispose();
         }
     }
 }

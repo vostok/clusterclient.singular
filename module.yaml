@@ -30,7 +30,6 @@ notests *default:
     - vostok.clusterconfig.client
     - vostok.clusterconfig.client.abstractions
     - vostok.singular.core@client-timeout/src
-    - vostok.commons.time
 
 full-build > notests:
   deps:
