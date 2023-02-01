@@ -20,7 +20,6 @@ using Vostok.Logging.Abstractions;
 using Vostok.Metrics;
 using Vostok.Singular.Core;
 using Vostok.Singular.Core.PathPatterns.Idempotency;
-using Vostok.Singular.Core.PathPatterns.SettingsAlias;
 using Vostok.Singular.Core.PathPatterns.Timeout;
 using Vostok.Singular.Core.QualityMetrics;
 
@@ -75,7 +74,8 @@ namespace Vostok.Clusterclient.Singular
             var internalSingularClient = InternalSingularClientProvider.Get(configuration.Log.WithDisabledLevels(LogLevel.Debug), settings.AlternativeClusterProvider);
             var idempotencyIdentifier = IdempotencyIdentifierCache.Get(internalSingularClient, settings.TargetEnvironment, settings.TargetService);
             var idempotencyStrategy = new IdempotencySignBasedRequestStrategy(idempotencyIdentifier, Strategy.Sequential1, forkingStrategy);
-            configuration.DefaultRequestStrategy = CreateTimeoutStrategy(idempotencyStrategy, internalSingularClient, settings);
+            configuration.DefaultRequestStrategy = CreateSingularTimeoutSettingsStrategy(idempotencyStrategy, internalSingularClient, settings);
+            ConfigurationProviderConfigurator.SetupLoggingAndSetDefaultProvider();
 
             configuration.MaxReplicasUsedPerRequest = SingularClientConstants.ForkingStrategyParallelismLevel;
 
@@ -126,13 +126,15 @@ namespace Vostok.Clusterclient.Singular
             }
         }
 
-        private static IRequestStrategy CreateTimeoutStrategy(IRequestStrategy idempotencyStrategy, IClusterClient internalSingularClient, SingularClientSettings settings)
+        private static IRequestStrategy CreateSingularTimeoutSettingsStrategy(IRequestStrategy idempotencyStrategy, 
+                                                              IClusterClient internalSingularClient, 
+                                                              SingularClientSettings settings)
         {
-            var settingsAliasIdentifier = new SettingsAliasIdentifierFactory()
-                .Create(internalSingularClient, settings.TargetEnvironment, settings.TargetService);
-            var timeoutSettingsResolver = new TimeoutSettingsResolverFactory(settingsAliasIdentifier)
-                .Create(internalSingularClient, settings.TargetEnvironment, settings.TargetService);
-            return new TimeoutStrategy(idempotencyStrategy, timeoutSettingsResolver);
+            if (!settings.UseTimeoutFromSingularSettings)
+                return idempotencyStrategy;
+            
+            var timeoutSettingsProvider = TimeoutSettingsProviderCache.Get(internalSingularClient, settings.TargetEnvironment, settings.TargetService);
+            return new SingularTimeoutSettingsStrategy(idempotencyStrategy, timeoutSettingsProvider);
         }
     }
 }
