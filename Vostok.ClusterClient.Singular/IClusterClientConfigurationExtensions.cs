@@ -124,18 +124,6 @@ namespace Vostok.Clusterclient.Singular
             }
         }
 
-        private static IRequestStrategy CreateSingularTimeoutSettingsStrategy(
-            IRequestStrategy idempotencyStrategy,
-            IClusterClient internalSingularClient,
-            SingularClientSettings settings)
-        {
-            if (!settings.UseTimeoutFromSingularSettings)
-                return idempotencyStrategy;
-
-            var timeoutSettingsProvider = TimeoutSettingsProviderCache.Get(internalSingularClient, settings.TargetEnvironment, settings.TargetService);
-            return new SingularTimeoutSettingsStrategy(idempotencyStrategy, timeoutSettingsProvider);
-        }
-
         private static IRequestStrategy CreateSingularStrategy(
             IClusterClient internalSingularClient,
             SingularClientSettings settings,
