@@ -25,7 +25,7 @@ notests *default:
     - vostok.commons.environment/src
     - vostok.commons.threading/src
     - vostok.devtools
-    - vostok.clusterclient.core@client-timeout
+    - vostok.clusterclient.core
     - vostok.clusterclient.topology.cc
     - vostok.clusterconfig.client
     - vostok.clusterconfig.client.abstractions
