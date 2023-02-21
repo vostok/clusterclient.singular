@@ -62,7 +62,7 @@ namespace Vostok.Clusterclient.Singular
         /// Specifies whether client should use secured connection to Singular replicas.
         /// </summary>
         public bool UseTls { get; set; }
-        
+
         /// <summary>
         /// Specifies whether client should take timeout for request from Singular or from code.
         /// </summary>

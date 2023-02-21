@@ -15,7 +15,7 @@ namespace Vostok.Clusterclient.Singular
         {
             this.log = log;
         }
-        
+
         public async Task<ClusterResult> ExecuteAsync(IRequestContext context, Func<IRequestContext, Task<ClusterResult>> next)
         {
             log.Info("Client timeout has been overridden by Singular settings");
