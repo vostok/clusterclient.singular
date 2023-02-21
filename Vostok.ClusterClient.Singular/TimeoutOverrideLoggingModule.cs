@@ -20,7 +20,7 @@ namespace Vostok.Clusterclient.Singular
         {
             log.Info("Client timeout has been overridden by Singular settings");
 
-            return await next(context);
+            return await next(context).ConfigureAwait(false);
         }
     }
 }
