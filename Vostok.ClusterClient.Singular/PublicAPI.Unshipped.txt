@@ -1,2 +1,0 @@
-Vostok.Clusterclient.Singular.SingularClientSettings.UseTimeoutFromSingularSettings.get -> bool
-Vostok.Clusterclient.Singular.SingularClientSettings.UseTimeoutFromSingularSettings.set -> void

@@ -21,6 +21,8 @@ Vostok.Clusterclient.Singular.SingularClientSettings.SingularClientSettings(stri
 Vostok.Clusterclient.Singular.SingularClientSettings.SingularClientSettings(string serviceName) -> void
 Vostok.Clusterclient.Singular.SingularClientSettings.TargetEnvironment.get -> string
 Vostok.Clusterclient.Singular.SingularClientSettings.TargetService.get -> string
+Vostok.Clusterclient.Singular.SingularClientSettings.UseTimeoutFromSingularSettings.get -> bool
+Vostok.Clusterclient.Singular.SingularClientSettings.UseTimeoutFromSingularSettings.set -> void
 Vostok.Clusterclient.Singular.SingularClientSettings.UseTls.get -> bool
 Vostok.Clusterclient.Singular.SingularClientSettings.UseTls.set -> void
 Vostok.Clusterclient.Singular.Tls.SingularRemoteCertificateValidationCallbackFactory
