@@ -1,3 +1,7 @@
+## 0.1.26 (09-03-2023):
+
+Added support for timeouts from the service settings in Singular
+
 ## 0.1.25 (14-09-2022):
 
 Added configuration `DefaultConnectionTimeout`.
