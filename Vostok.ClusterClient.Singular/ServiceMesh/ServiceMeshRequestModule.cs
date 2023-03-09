@@ -104,7 +104,7 @@ namespace Vostok.Clusterclient.Singular.ServiceMesh
 
         private async Task<bool> RequestIsIdempotentAsync(IRequestContext context) =>
             await idempotencyIdentifier.IsIdempotentAsync(context.Request.Method,
-                    IdempotencySignBasedRequestStrategy.GetRequestPath(context.Request.Url),
+                    context.Request.Url.GetRequestPath(),
                     context.Request.GetIdempotencyHeader())
                 .ConfigureAwait(false);
 
