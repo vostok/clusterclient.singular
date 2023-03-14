@@ -30,6 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\vostok.commons.threading\Vostok.Commons.Threading\ThreadSafeRandom.cs" Link="Commons\ThreadSafeRandom.cs" />
+    <Compile Include="..\..\vostok.commons.time\Vostok.Commons.Time\TimeBudget.cs" Link="Commons\TimeBudget.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Vostok.ClusterClient.Core">
@@ -95,10 +96,6 @@
     <Reference Include="Vostok.ClusterClient.Transport">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\vostok.clusterclient.transport\Vostok.ClusterClient.Transport\bin\Release\$(ReferencesFramework)\Vostok.ClusterClient.Transport.dll</HintPath>
-    </Reference>
-    <Reference Include="Vostok.Commons.Time">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\vostok.commons.time\Vostok.Commons.Time\bin\Release\$(ReferencesFramework)\Vostok.Commons.Time.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
