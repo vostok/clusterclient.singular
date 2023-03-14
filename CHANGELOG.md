@@ -1,3 +1,7 @@
+## 0.1.27 (14-03-2023):
+
+Remove Vostok.Commons.Time dependency
+
 ## 0.1.26 (09-03-2023):
 
 Added support for timeouts from the service settings in Singular
