@@ -66,7 +66,6 @@ namespace Vostok.Clusterclient.Singular
                     var datacenters = DatacentersProvider.Get();
                     builder.AddRelativeWeightModifier(new RelativeWeightSettings());
                     builder.SetupAvoidInactiveDatacentersWeightModifier(datacenters);
-                    builder.SetupBoostLocalDatacentersWeightModifier(datacenters);
                 });
 
             var internalSingularClient = InternalSingularClientProvider.Get(configuration.Log.WithDisabledLevels(LogLevel.Debug), settings.AlternativeClusterProvider);
