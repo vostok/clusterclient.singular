@@ -51,7 +51,6 @@ namespace Vostok.Clusterclient.Singular
                             var datacenters = DatacentersProvider.Get();
                             builder.AddRelativeWeightModifier(new RelativeWeightSettings());
                             builder.SetupAvoidInactiveDatacentersWeightModifier(datacenters);
-                            builder.SetupBoostLocalDatacentersWeightModifier(datacenters);
                         });
                     configuration.Logging.LoggingMode = LoggingMode.SingleShortMessage;
                     configuration.TargetEnvironment = SingularConstants.DefaultZone;
