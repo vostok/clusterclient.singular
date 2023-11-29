@@ -1,3 +1,7 @@
+## 0.1.28 (29-11-2023):
+
+Remove local datacenters preference
+
 ## 0.1.27 (14-03-2023):
 
 Remove Vostok.Commons.Time dependency
