@@ -1,3 +1,7 @@
+## 0.1.29 (15-11-2024):
+
+Update `Vostok.ClusterClient.Transport` dependency
+
 ## 0.1.28 (29-11-2023):
 
 Remove local datacenters preference
