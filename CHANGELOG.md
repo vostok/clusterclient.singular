@@ -1,3 +1,7 @@
+## 0.1.30 (16-12-2024): 
+
+Bump NuGet deps versions
+
 ## 0.1.29 (15-11-2024):
 
 Update `Vostok.ClusterClient.Transport` dependency
