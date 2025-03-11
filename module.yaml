@@ -7,6 +7,17 @@ notests *default:
 
   install:
     - Vostok.ClusterClient.Singular/bin/Release/netstandard2.0/Vostok.ClusterClient.Singular.dll
+    - groups:
+      - target-framework: "netstandard2.0"
+        libraries:
+          - Vostok.ClusterClient.Singular/bin/Release/netstandard2.0/Vostok.ClusterClient.Singular.dll
+      - target-framework: "net6.0"
+        libraries:
+          - Vostok.ClusterClient.Singular/bin/Release/net6.0/Vostok.ClusterClient.Singular.dll
+      - target-framework: "net8.0"
+        libraries:
+          - Vostok.ClusterClient.Singular/bin/Release/net8.0/Vostok.ClusterClient.Singular.dll
+
 
   deps:
     - vostok.clusterclient.transport
@@ -35,6 +46,20 @@ full-build > notests:
   deps:
     - -vostok.devtools
     - vostok.devtools@with-net6.0
+
+
+  install:
+    - Vostok.ClusterClient.Singular/bin/Release/netstandard2.0/Vostok.ClusterClient.Singular.dll
+    - groups:
+      - target-framework: "netstandard2.0"
+        libraries:
+          - Vostok.ClusterClient.Singular/bin/Release/netstandard2.0/Vostok.ClusterClient.Singular.dll
+      - target-framework: "net6.0"
+        libraries:
+          - Vostok.ClusterClient.Singular/bin/Release/net6.0/Vostok.ClusterClient.Singular.dll
+      - target-framework: "net8.0"
+        libraries:
+          - Vostok.ClusterClient.Singular/bin/Release/net8.0/Vostok.ClusterClient.Singular.dll
 
   build:
     target: Vostok.ClusterClient.Singular.sln
