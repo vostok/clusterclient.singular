@@ -50,7 +50,7 @@ namespace Vostok.Clusterclient.Singular
                         .WithHeader(SingularHeaders.Service, settings.TargetService)));
 
             configuration.TargetEnvironment = settings.TargetEnvironment;
-            configuration.TargetServiceName = ServiceMeshEnvironmentInfo.UseLocalSingular
+            configuration.TargetServiceName = !settings.DisableLocalSingular && ServiceMeshEnvironmentInfo.UseLocalSingular
                 ? $"{settings.TargetService} via ServiceMesh"
                 : $"{settings.TargetService} via {SingularConstants.ServiceName}";
 
@@ -74,7 +74,7 @@ namespace Vostok.Clusterclient.Singular
 
             configuration.MaxReplicasUsedPerRequest = SingularClientConstants.ForkingStrategyParallelismLevel;
 
-            if (ServiceMeshEnvironmentInfo.UseLocalSingular)
+            if (!settings.DisableLocalSingular && ServiceMeshEnvironmentInfo.UseLocalSingular)
             {
                 var serviceMeshRequestModule = new ServiceMeshRequestModule(configuration.Log, idempotencyIdentifier);
                 configuration.AddRequestModule(serviceMeshRequestModule, RequestModule.RequestExecution);

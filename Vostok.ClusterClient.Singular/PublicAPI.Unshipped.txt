@@ -1,0 +1,2 @@
+Vostok.Clusterclient.Singular.SingularClientSettings.DisableLocalSingular.get -> bool
+Vostok.Clusterclient.Singular.SingularClientSettings.DisableLocalSingular.set -> void
