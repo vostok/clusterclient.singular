@@ -67,5 +67,10 @@ namespace Vostok.Clusterclient.Singular
         /// Specifies whether client should take timeout for request from Singular or from code.
         /// </summary>
         public bool UseTimeoutFromSingularSettings { get; set; }
+        
+        /// <summary>
+        /// Prevents client from using local singular even if it exists
+        /// </summary>
+        public bool DisableLocalSingular { get; set; }
     }
 }
