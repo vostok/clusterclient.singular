@@ -15,6 +15,8 @@ Vostok.Clusterclient.Singular.IClusterClientConfigurationExtensions
 Vostok.Clusterclient.Singular.SingularClientSettings
 Vostok.Clusterclient.Singular.SingularClientSettings.AlternativeClusterProvider.get -> Vostok.Clusterclient.Core.Topology.IClusterProvider
 Vostok.Clusterclient.Singular.SingularClientSettings.AlternativeClusterProvider.set -> void
+Vostok.Clusterclient.Singular.SingularClientSettings.DisableLocalSingular.get -> bool
+Vostok.Clusterclient.Singular.SingularClientSettings.DisableLocalSingular.set -> void
 Vostok.Clusterclient.Singular.SingularClientSettings.MetricContext.get -> Vostok.Metrics.IMetricContext
 Vostok.Clusterclient.Singular.SingularClientSettings.MetricContext.set -> void
 Vostok.Clusterclient.Singular.SingularClientSettings.SingularClientSettings(string environmentName, string serviceName) -> void
