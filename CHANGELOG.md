@@ -1,3 +1,7 @@
+## 0.1.31 (06-08-2025):
+
+Add setting to disable the use of the local singular
+
 ## 0.1.30 (16-12-2024): 
 
 Bump NuGet deps versions
