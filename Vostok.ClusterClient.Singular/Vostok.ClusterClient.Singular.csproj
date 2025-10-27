@@ -7,7 +7,7 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup>
-    <VersionPrefix>0.1.32</VersionPrefix>
+    <VersionPrefix>0.1.33</VersionPrefix>
   </PropertyGroup>
   <PropertyGroup>
     <Title>Vostok.ClusterClient.Singular</Title>
@@ -29,9 +29,7 @@
     <Compile Include="..\..\vostok.commons.time\Vostok.Commons.Time\TimeBudget.cs" Link="Commons\TimeBudget.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Threading.Tasks.Extensions"
-                      Version="4.6.3"
-                      Condition="'$(TargetFramework)' == 'netstandard2.0'"/>
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.3" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Vostok.ClusterClient.Core">
