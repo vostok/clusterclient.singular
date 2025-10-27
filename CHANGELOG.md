@@ -1,3 +1,7 @@
+## 0.1.32 (27-10-2025):
+
+Singular.core project now uses a ValueTasks in several places to decrease GC pressure a bit. Se we need to add a package System.Threading.Tasks.Extensions for a netstandard.
+
 ## 0.1.31 (06-08-2025):
 
 Add setting to disable the use of the local singular

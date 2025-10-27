@@ -43,11 +43,6 @@ notests *default:
     - vostok.singular.core/src
 
 full-build > notests:
-  deps:
-    - -vostok.devtools
-    - vostok.devtools@with-net6.0
-
-
   install:
     - Vostok.ClusterClient.Singular/bin/Release/netstandard2.0/Vostok.ClusterClient.Singular.dll
     - groups:
