@@ -70,13 +70,18 @@ namespace Vostok.Clusterclient.Singular
 
             var internalSingularClient = InternalSingularClientProvider.Get(configuration.Log.WithDisabledLevels(LogLevel.Debug), settings.AlternativeClusterProvider);
             var idempotencyIdentifier = IdempotencyIdentifierCache.Get(internalSingularClient, settings.TargetEnvironment, settings.TargetService);
-            configuration.DefaultRequestStrategy = CreateSingularStrategy(configuration, internalSingularClient, settings, idempotencyIdentifier);
+            
+            var timeoutSettingsProvider = settings.UseTimeoutFromSingularSettings
+                ? TimeoutSettingsProviderCache.Get(internalSingularClient, settings.TargetEnvironment, settings.TargetService)
+                : null;
+            
+            configuration.DefaultRequestStrategy = CreateSingularStrategy(configuration, settings, idempotencyIdentifier, timeoutSettingsProvider);
 
             configuration.MaxReplicasUsedPerRequest = SingularClientConstants.ForkingStrategyParallelismLevel;
 
             if (!settings.DisableLocalSingular && ServiceMeshEnvironmentInfo.UseLocalSingular)
             {
-                var serviceMeshRequestModule = new ServiceMeshRequestModule(configuration.Log, idempotencyIdentifier);
+                var serviceMeshRequestModule = new ServiceMeshRequestModule(configuration.Log, idempotencyIdentifier, timeoutSettingsProvider);
                 configuration.AddRequestModule(serviceMeshRequestModule, RequestModule.RequestExecution);
             }
 
@@ -123,18 +128,17 @@ namespace Vostok.Clusterclient.Singular
 
         private static IRequestStrategy CreateSingularStrategy(
             IClusterClientConfiguration configuration,
-            IClusterClient internalSingularClient,
             SingularClientSettings settings,
-            IIdempotencyIdentifier idempotencyIdentifier)
+            IIdempotencyIdentifier idempotencyIdentifier,
+            TimeoutSettingsProvider? timeoutSettingsProvider)
         {
             var forkingStrategy = Strategy.Forking(SingularClientConstants.ForkingStrategyParallelismLevel);
             var idempotencyStrategy = new IdempotencySignBasedRequestStrategy(idempotencyIdentifier, Strategy.Sequential1, forkingStrategy);
 
-            if (!settings.UseTimeoutFromSingularSettings)
+            if (timeoutSettingsProvider == null)
                 return idempotencyStrategy;
 
             configuration.AddRequestModule(new TimeoutOverrideLoggingModule(configuration.Log));
-            var timeoutSettingsProvider = TimeoutSettingsProviderCache.Get(internalSingularClient, settings.TargetEnvironment, settings.TargetService);
             return new SingularTimeoutSettingsStrategy(idempotencyStrategy, timeoutSettingsProvider);
         }
     }

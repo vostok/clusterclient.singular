@@ -10,6 +10,7 @@ using Vostok.Logging.Abstractions;
 using Vostok.Singular.Core;
 using Vostok.Singular.Core.PathPatterns.Extensions;
 using Vostok.Singular.Core.PathPatterns.Idempotency;
+using Vostok.Singular.Core.PathPatterns.Timeout;
 
 #nullable enable
 
@@ -19,11 +20,17 @@ namespace Vostok.Clusterclient.Singular.ServiceMesh
     {
         private readonly ILog log;
         private readonly IIdempotencyIdentifier idempotencyIdentifier;
+        private readonly IRequestStrategy localSingularStrategy;
 
-        public ServiceMeshRequestModule(ILog log, IIdempotencyIdentifier idempotencyIdentifier)
+        public ServiceMeshRequestModule(ILog log, IIdempotencyIdentifier idempotencyIdentifier, TimeoutSettingsProvider? timeoutSettingsProvider)
         {
             this.log = log;
             this.idempotencyIdentifier = idempotencyIdentifier;
+            
+            // Create strategy for local Singular once: SingleReplica, optionally wrapped in timeout strategy
+            localSingularStrategy = timeoutSettingsProvider != null
+                ? new SingularTimeoutSettingsStrategy(Strategy.SingleReplica, timeoutSettingsProvider)
+                : Strategy.SingleReplica;
         }
 
         public async Task<ClusterResult> ExecuteAsync(IRequestContext requestContext, Func<IRequestContext, Task<ClusterResult>> next)
@@ -32,7 +39,7 @@ namespace Vostok.Clusterclient.Singular.ServiceMesh
 
             if (useLocalSingular)
             {
-                var requestContextTuner = new RequestContextTuner(requestContext);
+                var requestContextTuner = new RequestContextTuner(requestContext, localSingularStrategy);
 
                 requestContextTuner.PrepareForLocalSingular(requestContext);
 
@@ -117,13 +124,15 @@ namespace Vostok.Clusterclient.Singular.ServiceMesh
             private readonly IReplicaOrdering fallbackReplicaOrdering;
             private readonly int fallbackConnectionAttempts;
             private readonly IRequestStrategy? fallbackRequestStrategy;
+            private readonly IRequestStrategy localSingularStrategy;
 
-            public RequestContextTuner(IRequestContext requestContext)
+            public RequestContextTuner(IRequestContext requestContext, IRequestStrategy localSingularStrategy)
             {
                 fallbackClusterProvider = requestContext.ClusterProvider;
                 fallbackReplicaOrdering = requestContext.ReplicaOrdering;
                 fallbackConnectionAttempts = requestContext.ConnectionAttempts;
                 fallbackRequestStrategy = requestContext.Parameters.Strategy;
+                this.localSingularStrategy = localSingularStrategy;
             }
 
             public void PrepareForLocalSingular(IRequestContext requestContext)
