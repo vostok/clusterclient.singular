@@ -131,7 +131,7 @@ namespace Vostok.Clusterclient.Singular.ServiceMesh
                 requestContext.ClusterProvider = LocalSingularClusterProvider;
                 requestContext.ReplicaOrdering = LocalSingularReplicaOrdering;
                 requestContext.ConnectionAttempts = 1;
-                requestContext.Parameters = requestContext.Parameters.WithStrategy(SingleReplicaWithConnectionTimeoutRequestStrategy.Instance);
+                requestContext.Parameters = requestContext.Parameters.WithStrategy(localSingularStrategy);
             }
 
             public void PrepareToFallback(IRequestContext requestContext)
