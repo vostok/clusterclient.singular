@@ -70,7 +70,6 @@ namespace Vostok.Clusterclient.Singular
 
             var internalSingularClient = InternalSingularClientProvider.Get(configuration.Log.WithDisabledLevels(LogLevel.Debug), settings.AlternativeClusterProvider);
             var idempotencyIdentifier = IdempotencyIdentifierCache.Get(internalSingularClient, settings.TargetEnvironment, settings.TargetService);
-            
             var timeoutSettingsProvider = settings.UseTimeoutFromSingularSettings
                 ? TimeoutSettingsProviderCache.Get(internalSingularClient, settings.TargetEnvironment, settings.TargetService)
                 : null;
@@ -79,7 +78,7 @@ namespace Vostok.Clusterclient.Singular
 
             configuration.MaxReplicasUsedPerRequest = SingularClientConstants.ForkingStrategyParallelismLevel;
 
-            if (timeoutSettingsProvider != null)
+            if (settings.UseTimeoutFromSingularSettings)
                 configuration.AddRequestModule(new TimeoutOverrideLoggingModule(configuration.Log));
 
             if (!settings.DisableLocalSingular && ServiceMeshEnvironmentInfo.UseLocalSingular)
