@@ -27,7 +27,6 @@ namespace Vostok.Clusterclient.Singular.ServiceMesh
             this.log = log;
             this.idempotencyIdentifier = idempotencyIdentifier;
             
-            // Create strategy for local Singular once: SingleReplica, optionally wrapped in timeout strategy
             localSingularStrategy = timeoutSettingsProvider != null
                 ? new SingularTimeoutSettingsStrategy(Strategy.SingleReplica, timeoutSettingsProvider)
                 : Strategy.SingleReplica;
