@@ -1,3 +1,7 @@
+## 0.1.33 (11-11-2025)
+
+fix: use timeout settings from singular when service-mesh enabled  
+
 ## 0.1.32 (27-10-2025):
 
 Singular.core project now uses a ValueTasks in several places to decrease GC pressure a bit. Se we need to add a package System.Threading.Tasks.Extensions for a netstandard.
